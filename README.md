@@ -57,3 +57,48 @@ GET: Get all the issued books with their fine
 ## npm i nodemon --save-dev // save dev for devellopers dependency so tha we don't have to kill the server manually and clients will not do nay changes in the server
 
 ## npm run dev
+
+MVC Arch => Controllers
+
+> > M: Modal (combination of View and COntroller=> depicts the structure of MongoDB)
+> > V: View (Frontend (reactJs))
+> > C: Controllers:Brain or logical part of a route
+> > books.controllers.js
+> > users.controllers.js
+
+Schema >> Below is the representation of table
+id: String (datatype)
+name: String
+age: number
+gender: char || varchar(15)
+
+V/S
+
+Modal >> Modals have the value of the particular fields and schema have the conditions for the values
+id: 123
+name: DevTown
+age: 23
+gender:'M'
+
+Foreign Key:
+
+> > Refrential Integrity
+> > eg:
+> > Users Table Books Table
+> > issuedBook: 2(Foreign Key) issuedBook: 2 (Primary Key)
+
+DTO (Data Transfer Object) => Transfering info of obj to another obj
+var obj1 : {
+name
+age
+id
+gender
+}
+
+var obj2: {
+name
+age
+id
+gender
+
+}

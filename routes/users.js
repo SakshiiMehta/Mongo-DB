@@ -1,6 +1,13 @@
 const express = require("express");
 const { users } = require("../data/users.json");
 const router = express.Router();
+const { UserModal, BookModal } = require("../modals/index.js");
+const {
+  getAllUsers,
+  getSingleUserById,
+  deleteUser,
+  updateUserById,
+} = require("../controllers/user-controller.js");
 
 /*
  *Route:/users
@@ -10,12 +17,14 @@ const router = express.Router();
  *Parameters:None
  */
 
-router.get("/", (req, res) => {
-  res.status(200).json({
-    success: true,
-    data: users,
-  });
-});
+router.get("/", getAllUsers);
+
+// router.get("/", (req, res) => {
+//   res.status(200).json({
+//     success: true,
+//     data: users,
+//   });
+// });
 
 /*
  *Route:/users/:id
@@ -24,21 +33,24 @@ router.get("/", (req, res) => {
  *Access: Public
  *Parameters: Id
  */
-router.get("/:id", (req, res) => {
-  const { id } = req.params; // fetching the ID from req parameter
-  const user = users.find((each) => each.id === id); // save the data in var user ==> each means i want to go through each and every elements of that array
-  if (!user) {
-    return res.status(404).json({
-      success: false,
-      message: "User does not exist",
-    });
-  }
-  return res.status(200).json({
-    success: true,
-    message: "User Found",
-    data: user,
-  });
-});
+
+router.get("/:id", getSingleUserById);
+
+// router.get("/:id", (req, res) => {
+//   const { id } = req.params; // fetching the ID from req parameter
+//   const user = users.find((each) => each.id === id); // save the data in var user ==> each means i want to go through each and every elements of that array
+//   if (!user) {
+//     return res.status(404).json({
+//       success: false,
+//       message: "User does not exist",
+//     });
+//   }
+//   return res.status(200).json({
+//     success: true,
+//     message: "User Found",
+//     data: user,
+//   });
+// });
 
 /*
  *Route:/users/
@@ -48,34 +60,34 @@ router.get("/:id", (req, res) => {
  *Parameters: none
  */
 
-router.post("/", (req, res) => {
-  const { id, name, surname, email, subscriptionType, subscriptionDate } =
-    req.body;
+// router.post("/", (req, res) => {
+//   const { id, name, surname, email, subscriptionType, subscriptionDate } =
+//     req.body;
 
-  const user = users.find((each) => each.id === id);
+//   const user = users.find((each) => each.id === id);
 
-  if (user) {
-    return res.status(404).json({
-      success: false,
-      message: "User with the same ID exists",
-    });
-  }
+//   if (user) {
+//     return res.status(404).json({
+//       success: false,
+//       message: "User with the same ID exists",
+//     });
+//   }
 
-  users.push({
-    id,
-    name,
-    surname,
-    email,
-    subscriptionType,
-    subscriptionDate,
-  });
+//   users.push({
+//     id,
+//     name,
+//     surname,
+//     email,
+//     subscriptionType,
+//     subscriptionDate,
+//   });
 
-  return res.status(201).json({
-    success: true,
-    message: "User added successfully",
-    data: users,
-  });
-});
+//   return res.status(201).json({
+//     success: true,
+//     message: "User added successfully",
+//     data: users,
+//   });
+// });
 
 /*
  *Route:/users/:id
@@ -85,32 +97,34 @@ router.post("/", (req, res) => {
  *Parameters: ID
  */
 
-router.put("/:id", (req, res) => {
-  const { id } = req.params;
-  const { data } = req.body;
+router.put("/:id", updateUserById);
 
-  const user = users.find((each) => each.id === id); // save the data in var user ==> each means i want to go through each and every elements of that array
-  if (!user) {
-    return res.status(404).json({
-      success: false,
-      message: "User does not exist",
-    });
-  }
-  const updateUserData = users.map((each) => {
-    if (each.id === id) {
-      return {
-        ...each, // spread operator
-        ...data,
-      };
-    }
-    return each;
-  });
-  return res.status(200).json({
-    success: true,
-    message: "User updated",
-    data: updateUserData,
-  });
-});
+// router.put("/:id", (req, res) => {
+//   const { id } = req.params;
+//   const { data } = req.body;
+
+//   const user = users.find((each) => each.id === id); // save the data in var user ==> each means i want to go through each and every elements of that array
+//   if (!user) {
+//     return res.status(404).json({
+//       success: false,
+//       message: "User does not exist",
+//     });
+//   }
+//   const updateUserData = users.map((each) => {
+//     if (each.id === id) {
+//       return {
+//         ...each, // spread operator
+//         ...data,
+//       };
+//     }
+//     return each;
+//   });
+//   return res.status(200).json({
+//     success: true,
+//     message: "User updated",
+//     data: updateUserData,
+//   });
+// });
 
 /*
  *Route:/users/:id
@@ -120,23 +134,25 @@ router.put("/:id", (req, res) => {
  *Parameters: ID
  */
 
-router.delete("/:id", (req, res) => {
-  const { id } = req.params;
+router.delete("/:id", deleteUser);
 
-  const user = users.find((each) => each.id === id); // save the data in var user ==> each means i want to go through each and every elements of that array
-  if (!user) {
-    return res.status(404).json({
-      success: false,
-      message: "User does not exist",
-    });
-  }
-  const index = users.indexOf(user); // in the users string index of method is used to return the (user) in the array
-  users.splice(index, 1);
+// router.delete("/:id", (req, res) => {
+//   const { id } = req.params;
 
-  return res
-    .status(200)
-    .json({ success: true, message: "Deleted user..", data: users });
-});
+//   const user = users.find((each) => each.id === id); // save the data in var user ==> each means i want to go through each and every elements of that array
+//   if (!user) {
+//     return res.status(404).json({
+//       success: false,
+//       message: "User does not exist",
+//     });
+//   }
+//   const index = users.indexOf(user); // in the users string index of method is used to return the (user) in the array
+//   users.splice(index, 1);
+
+//   return res
+//     .status(200)
+//     .json({ success: true, message: "Deleted user..", data: users });
+// });
 
 /*
  *Route:/users/subscription-details/:id
